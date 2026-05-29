@@ -22,7 +22,7 @@ const HeroSection = () => {
         height: '60vh',
         minHeight: '480px',
         borderRadius: '24px',
-        background: 'linear-gradient(to bottom, rgba(8, 8, 12, 0.4) 0%, rgba(8, 8, 12, 0.95) 100%), url("https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=1200&auto=format&fit=crop&q=80") center/cover no-repeat',
+        background: 'linear-gradient(to bottom, rgba(250, 250, 249, 0.1) 0%, rgba(250, 250, 249, 0.85) 100%), url("https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=1200&auto=format&fit=crop&q=80") center/cover no-repeat',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -30,7 +30,7 @@ const HeroSection = () => {
         padding: '40px',
         textAlign: 'center',
         position: 'relative',
-        boxShadow: 'inset 0 0 100px rgba(0,0,0,0.8)'
+        boxShadow: '0 10px 40px rgba(178, 144, 40, 0.08)'
       }}
     >
       {/* Luxury Brand Tag */}

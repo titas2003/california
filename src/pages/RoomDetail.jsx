@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useSearchParams, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { bookRoom } from '../store/bookingSlice';
+import { createBookingThunk } from '../store/bookingSlice';
 import { fetchRoomsThunk } from '../store/roomSlice';
 import { Compass, Calendar, ArrowRight, ShieldCheck, Heart, AlertTriangle } from 'lucide-react';
 
@@ -75,19 +75,19 @@ const RoomDetail = () => {
     }
 
     // Dispatch booking action
-    dispatch(bookRoom({
-      roomId: room.id,
-      roomNumber: room.roomNumber,
-      roomType: room.type,
+    dispatch(createBookingThunk({
+      roomId: room._id || room.id,
       checkIn,
-      checkOut,
-      totalAmount: totalCost,
-      pricePerNight: room.pricePerNight,
-      guestName: user.name
-    }));
-
-    // Redirect to active stays desk
-    navigate('/bookings');
+      checkOut
+    }))
+      .unwrap()
+      .then(() => {
+        // Redirect to active stays desk
+        navigate('/bookings');
+      })
+      .catch((err) => {
+        setDateError(err || 'Booking failed');
+      });
   };
 
   return (
@@ -117,7 +117,7 @@ const RoomDetail = () => {
             </div>
             <div>
               <span style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase' }}>Starting Rate</span>
-              <strong style={{ color: 'var(--accent-gold)', fontSize: '1.1rem' }}>${room.pricePerNight} / Night</strong>
+              <strong style={{ color: 'var(--accent-gold)', fontSize: '1.1rem' }}>₹{room.pricePerNight} / Night</strong>
             </div>
             <div>
               <span style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase' }}>Security Policy</span>
@@ -180,16 +180,16 @@ const RoomDetail = () => {
             {checkIn && checkOut && (
               <div style={{ padding: '16px', background: 'rgba(255,255,255,0.02)', borderRadius: '10px', border: '1px solid var(--border-glass)', display: 'flex', flexDirection: 'column', gap: '10px' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem', color: 'var(--text-muted)' }}>
-                  <span>Rate: ${room.pricePerNight} x {stayNights} Nights</span>
-                  <span>${totalCost}</span>
+                  <span>Rate: ₹{room.pricePerNight} x {stayNights} Nights</span>
+                  <span>₹{totalCost}</span>
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem', color: 'var(--text-muted)' }}>
                   <span>Resort Fees & Taxes (12%)</span>
-                  <span>${(totalCost * 0.12).toFixed(2)}</span>
+                  <span>₹{(totalCost * 0.12).toFixed(2)}</span>
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', fontWeight: 700, borderTop: '1px solid rgba(255,255,255,0.06)', paddingTop: '10px', fontSize: '1rem' }}>
                   <span>Estimated Total</span>
-                  <span style={{ color: 'var(--accent-gold)' }}>${(totalCost * 1.12).toFixed(2)}</span>
+                  <span style={{ color: 'var(--accent-gold)' }}>₹{(totalCost * 1.12).toFixed(2)}</span>
                 </div>
               </div>
             )}

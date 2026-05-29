@@ -67,7 +67,7 @@ const Rooms = () => {
                   color: 'var(--accent-gold)' 
                 }}
               >
-                ${room.pricePerNight} / Night
+                ₹{room.pricePerNight} / Night
               </div>
             </div>
 

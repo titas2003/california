@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { settleInvoice, requestTransport, cancelBooking, fetchCustomerBookingsThunk } from '../store/bookingSlice';
+import { settleInvoice, requestTransport, cancelBookingThunk, fetchCustomerBookingsThunk } from '../store/bookingSlice';
 import { Compass, Calendar, CreditCard, Car, RefreshCw, XCircle } from 'lucide-react';
 
 const MyBookings = () => {
@@ -82,7 +82,7 @@ const MyBookings = () => {
                   <label className="form-label">Shuttle Fleet</label>
                   <select className="form-input" value={vehicleType} onChange={(e) => setVehicleType(e.target.value)}>
                     <option value="Shuttle Bus">Beverly Shuttle Bus (Free)</option>
-                    <option value="Luxury Limo">Luxury Pick-up Limo ($75.00)</option>
+                    <option value="Luxury Limo">Luxury Pick-up Limo (₹75.00)</option>
                   </select>
                 </div>
                 <div className="form-group" style={{ flex: '2', minWidth: '240px' }}>
@@ -137,7 +137,7 @@ const MyBookings = () => {
                 {/* Settle Invoices Details */}
                 <div style={{ flex: '1', minWidth: '200px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
                   <span style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase' }}>Invoice Billing</span>
-                  <strong style={{ fontSize: '1.5rem', color: 'var(--text-main)' }}>${(booking.totalAmount + booking.tax).toFixed(2)}</strong>
+                  <strong style={{ fontSize: '1.5rem', color: 'var(--text-main)' }}>₹{(booking.totalAmount + booking.tax).toFixed(2)}</strong>
                   <span className={`badge ${booking.paymentStatus === 'Paid' ? 'badge-success' : 'badge-warning'}`} style={{ width: 'fit-content' }}>
                     Payment: {booking.paymentStatus} {booking.paymentMethod !== 'Pending' && `(${booking.paymentMethod})`}
                   </span>
@@ -174,7 +174,7 @@ const MyBookings = () => {
                   )}
 
                   {booking.bookingStatus === 'Confirmed' && (
-                    <button onClick={() => dispatch(cancelBooking(bookingId))} className="btn btn-danger" style={{ padding: '8px 20px', fontSize: '0.85rem' }}>
+                    <button onClick={() => dispatch(cancelBookingThunk(bookingId))} className="btn btn-danger" style={{ padding: '8px 20px', fontSize: '0.85rem' }}>
                       <XCircle size={14} />
                       <span>Cancel Stay</span>
                     </button>
