@@ -27,6 +27,22 @@ const RoomDetail = () => {
   const [stayNights, setStayNights] = useState(1);
   const [totalCost, setTotalCost] = useState(0);
   const [dateError, setDateError] = useState('');
+  
+  const [activeImg, setActiveImg] = useState('');
+
+  const initialGuests = parseInt(searchParams.get('guests') || '1', 10);
+  const [formGuests, setFormGuests] = useState(initialGuests > 2 ? 2 : initialGuests);
+  const [guestsWarning, setGuestsWarning] = useState(
+    initialGuests > 2 
+      ? `Strict Luxury Policy Note: Your original search asked for ${initialGuests} guests. However, each individual suite is limited to a maximum of 2 guests. We have adjusted your party size for this single room booking to 2 guests.` 
+      : ''
+  );
+
+  useEffect(() => {
+    if (room) {
+      setActiveImg(room.images && room.images[0] ? room.images[0] : room.image || '');
+    }
+  }, [room]);
 
   useEffect(() => {
     if (checkIn && checkOut) {
@@ -68,9 +84,14 @@ const RoomDetail = () => {
       return;
     }
 
+    if (formGuests > 2) {
+      setDateError('Strict Luxury Policy: No room can be booked with more than 2 guests.');
+      return;
+    }
+
     if (!isAuthenticated) {
       // Redirect to login page and preserve booking intention
-      navigate(`/login?redir=/rooms/${id}?in=${checkIn}&out=${checkOut}`);
+      navigate(`/login?redir=/rooms/${id}?in=${checkIn}&out=${checkOut}&guests=${formGuests}`);
       return;
     }
 
@@ -78,7 +99,8 @@ const RoomDetail = () => {
     dispatch(createBookingThunk({
       roomId: room._id || room.id,
       checkIn,
-      checkOut
+      checkOut,
+      guests: formGuests
     }))
       .unwrap()
       .then(() => {
@@ -104,8 +126,34 @@ const RoomDetail = () => {
         
         {/* Left Column - Details */}
         <div style={{ flex: '1.4', minWidth: '320px', display: 'flex', flexDirection: 'column', gap: '24px' }}>
-          <div style={{ height: '400px', width: '100%', borderRadius: '20px', overflow: 'hidden' }}>
-            <img src={room.image} alt={room.type} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+            <div style={{ height: '400px', width: '100%', borderRadius: '20px', overflow: 'hidden', border: '1px solid var(--border-glass)' }}>
+              <img src={activeImg || room.image} alt={room.type} style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'all 0.3s ease' }} />
+            </div>
+            
+            {/* Gallery Thumbnails */}
+            {room.images && room.images.length > 0 && (
+              <div style={{ display: 'flex', gap: '10px' }}>
+                {room.images.map((img, i) => (
+                  <button 
+                    key={i} 
+                    onClick={() => setActiveImg(img)}
+                    style={{ 
+                      width: '80px', 
+                      height: '60px', 
+                      borderRadius: '8px', 
+                      overflow: 'hidden', 
+                      border: activeImg === img ? '2px solid var(--accent-gold)' : '1px solid var(--border-glass)',
+                      cursor: 'pointer',
+                      background: 'none',
+                      padding: 0
+                    }}
+                  >
+                    <img src={img} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
 
           <h2 className="serif-text" style={{ fontSize: '2.5rem' }}>{room.type} Suite {room.roomNumber}</h2>
@@ -175,6 +223,34 @@ const RoomDetail = () => {
                 />
               </div>
             </div>
+
+            <div className="form-group">
+              <label className="form-label">Guests in this Suite</label>
+              <select 
+                className="form-input" 
+                value={formGuests} 
+                onChange={(e) => {
+                  const val = parseInt(e.target.value, 10);
+                  setFormGuests(val);
+                  if (val > 2) {
+                    setDateError('Strict Luxury Policy: No suite can be booked with more than 2 guests.');
+                  } else {
+                    setDateError('');
+                  }
+                }}
+              >
+                <option value="1">1 Guest</option>
+                <option value="2">2 Guests</option>
+                <option value="3">3 Guests (Prohibited)</option>
+              </select>
+            </div>
+
+            {guestsWarning && (
+              <div style={{ color: 'var(--accent-gold)', fontSize: '0.8rem', background: 'rgba(212, 175, 55, 0.05)', padding: '10px 14px', borderRadius: '8px', border: '1px solid rgba(212, 175, 55, 0.15)', display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                <span style={{ fontWeight: 600 }}>Policy Information</span>
+                <span>{guestsWarning}</span>
+              </div>
+            )}
 
             {/* Calculations Breakdown */}
             {checkIn && checkOut && (

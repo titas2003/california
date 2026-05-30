@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import HeroSection from '../components/HeroSection';
 import { 
   Sparkles, 
   Flame, 
@@ -30,10 +31,10 @@ const Home = () => {
     const handleScroll = () => {
       setScrollY(window.scrollY);
       
-      // Dynamic section calculations based on screen height positions
+      // Dynamic section calculations based on screen height positions (6 sections total now)
       const height = window.innerHeight;
       const section = Math.round(window.scrollY / height);
-      setActiveSection(Math.min(Math.max(section, 0), 4));
+      setActiveSection(Math.min(Math.max(section, 0), 5));
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
@@ -46,9 +47,10 @@ const Home = () => {
     { title: 'Summit Heli-Skiing', desc: 'Untouched powder awaits. Take guided runs off virgin backcountry ridges with our expert mountain patrol.', icon: Trees }
   ];
 
-  // Mountain background images
+  // Mountain background images (extended to match 6 sections)
   const backdrops = [
     'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1920&q=80', // Sunrise Glow Peak
+    'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=1920&auto=format&fit=crop&q=80', // Luxury lobby (Search context)
     'https://images.unsplash.com/photo-1454496522488-7a8e488e8606?auto=format&fit=crop&w=1920&q=80', // Snowy Spruce Pine Forest
     'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1920&q=80', // Misty Volcanic Hot Spring Valley
     'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=1920&q=80', // Cozy Wood Dining Fireside
@@ -249,13 +251,28 @@ const Home = () => {
         </div>
       </section>
 
+      {/* Section 2: Advanced Search Portal (Slides in when scrolling) */}
+      <section className="story-section" style={{ justifyContent: 'center' }}>
+        <div 
+          className="story-container"
+          style={{
+            maxWidth: '960px',
+            opacity: activeSection === 1 ? 1 : 0,
+            transform: activeSection === 1 ? 'translateY(0)' : 'translateY(50px)',
+            transition: 'transform 1.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 1.6s cubic-bezier(0.16, 1, 0.3, 1)'
+          }}
+        >
+          <HeroSection />
+        </div>
+      </section>
+
       {/* Section 2: Mountain Ridge Canopy (Right Aligned) */}
       <section className="story-section" style={{ justifyContent: 'flex-end' }}>
         <div 
           className="story-container"
           style={{
-            opacity: activeSection === 1 ? 1 : 0,
-            transform: activeSection === 1 ? 'translateY(0)' : 'translateY(50px)',
+            opacity: activeSection === 2 ? 1 : 0,
+            transform: activeSection === 2 ? 'translateY(0)' : 'translateY(50px)',
             transition: 'transform 1.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 1.6s cubic-bezier(0.16, 1, 0.3, 1)'
           }}
         >
@@ -281,8 +298,8 @@ const Home = () => {
         <div 
           className="story-container"
           style={{
-            opacity: activeSection === 2 ? 1 : 0,
-            transform: activeSection === 2 ? 'translateY(0)' : 'translateY(50px)',
+            opacity: activeSection === 3 ? 1 : 0,
+            transform: activeSection === 3 ? 'translateY(0)' : 'translateY(50px)',
             transition: 'transform 1.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 1.6s cubic-bezier(0.16, 1, 0.3, 1)'
           }}
         >
@@ -309,8 +326,8 @@ const Home = () => {
         <div 
           className="story-container"
           style={{
-            opacity: activeSection === 3 ? 1 : 0,
-            transform: activeSection === 3 ? 'translateY(0)' : 'translateY(50px)',
+            opacity: activeSection === 4 ? 1 : 0,
+            transform: activeSection === 4 ? 'translateY(0)' : 'translateY(50px)',
             transition: 'transform 1.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 1.6s cubic-bezier(0.16, 1, 0.3, 1)'
           }}
         >
@@ -336,8 +353,8 @@ const Home = () => {
         <div 
           className="story-container"
           style={{
-            opacity: activeSection === 4 ? 1 : 0,
-            transform: activeSection === 4 ? 'translateY(0)' : 'translateY(50px)',
+            opacity: activeSection === 5 ? 1 : 0,
+            transform: activeSection === 5 ? 'translateY(0)' : 'translateY(50px)',
             transition: 'transform 1.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 1.6s cubic-bezier(0.16, 1, 0.3, 1)'
           }}
         >
