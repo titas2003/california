@@ -16,6 +16,7 @@ import {
   Mail,
   Phone,
   MapPin,
+  Map,
   ExternalLink,
   Facebook,
   Instagram,
@@ -31,10 +32,10 @@ const Home = () => {
     const handleScroll = () => {
       setScrollY(window.scrollY);
       
-      // Dynamic section calculations based on screen height positions (6 sections total now)
+      // Dynamic section calculations based on screen height positions (7 sections total now)
       const height = window.innerHeight;
       const section = Math.round(window.scrollY / height);
-      setActiveSection(Math.min(Math.max(section, 0), 5));
+      setActiveSection(Math.min(Math.max(section, 0), 6));
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
@@ -47,14 +48,15 @@ const Home = () => {
     { title: 'Summit Heli-Skiing', desc: 'Untouched powder awaits. Take guided runs off virgin backcountry ridges with our expert mountain patrol.', icon: Trees }
   ];
 
-  // Mountain background images (extended to match 6 sections)
+  // Mountain background images (extended to match 7 sections)
   const backdrops = [
     'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1920&q=80', // Sunrise Glow Peak
     'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=1920&auto=format&fit=crop&q=80', // Luxury lobby (Search context)
     'https://images.unsplash.com/photo-1454496522488-7a8e488e8606?auto=format&fit=crop&w=1920&q=80', // Snowy Spruce Pine Forest
     'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1920&q=80', // Misty Volcanic Hot Spring Valley
     'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=1920&q=80', // Cozy Wood Dining Fireside
-    'https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=1920&q=80'  // Epic Night Star Peak Chalet
+    'https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=1920&q=80', // Epic Night Star Peak Chalet
+    'https://images.unsplash.com/photo-1524661135-423995f22d0b?w=1920&auto=format&fit=crop&q=80'  // Epic aerial view (Map backdrop context)
   ];
 
   return (
@@ -137,6 +139,18 @@ const Home = () => {
           border-color: rgba(22, 78, 53, 0.22);
           box-shadow: 0 35px 80px rgba(22, 78, 53, 0.08);
           transform: translateY(-4px);
+        }
+
+        @media (max-width: 991px) {
+          .story-section.extreme-edge-section {
+            padding-left: 20px !important;
+            padding-right: 20px !important;
+            justify-content: center !important;
+          }
+          .story-container.extreme-edge-container {
+            width: 100% !important;
+            max-width: 100% !important;
+          }
         }
 
         /* Scroll indicator */
@@ -266,17 +280,19 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Section 2: Mountain Ridge Canopy (Right Aligned) */}
-      <section className="story-section" style={{ justifyContent: 'flex-end' }}>
+      {/* Section 2: Mountain Ridge Canopy (Extreme Right Edge, Wider past Middle) */}
+      <section className="story-section extreme-edge-section" style={{ justifyContent: 'flex-end', paddingLeft: 0, paddingRight: 0 }}>
         <div 
-          className="story-container"
+          className="story-container extreme-edge-container"
           style={{
+            width: '65%',
+            maxWidth: '65%',
             opacity: activeSection === 2 ? 1 : 0,
             transform: activeSection === 2 ? 'translateY(0)' : 'translateY(50px)',
             transition: 'transform 1.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 1.6s cubic-bezier(0.16, 1, 0.3, 1)'
           }}
         >
-          <div className="luxury-story-pane">
+          <div className="luxury-story-pane" style={{ borderRadius: '0px', paddingRight: '8%' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--accent-gold)' }}>
               <Trees size={16} />
               <span style={{ textTransform: 'uppercase', fontSize: '0.75rem', letterSpacing: '2px', fontWeight: 700 }}>Elevation 1,800m</span>
@@ -293,17 +309,19 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Section 3: Geothermal Pools (Left Aligned) */}
-      <section className="story-section" style={{ justifyContent: 'flex-start' }}>
+      {/* Section 3: Geothermal Pools (Extreme Left Edge, Wider past Middle) */}
+      <section className="story-section extreme-edge-section" style={{ justifyContent: 'flex-start', paddingLeft: 0, paddingRight: 0 }}>
         <div 
-          className="story-container"
+          className="story-container extreme-edge-container"
           style={{
+            width: '65%',
+            maxWidth: '65%',
             opacity: activeSection === 3 ? 1 : 0,
             transform: activeSection === 3 ? 'translateY(0)' : 'translateY(50px)',
             transition: 'transform 1.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 1.6s cubic-bezier(0.16, 1, 0.3, 1)'
           }}
         >
-          <div className="luxury-story-pane">
+          <div className="luxury-story-pane" style={{ borderRadius: '0px', paddingLeft: '8%' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--accent-gold)' }}>
               <Flame size={16} />
               <span style={{ textTransform: 'uppercase', fontSize: '0.75rem', letterSpacing: '2px', fontWeight: 700 }}>Thermal Basalt Pools</span>
@@ -321,17 +339,19 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Section 4: Michelin Gastronomy (Right Aligned) */}
-      <section className="story-section" style={{ justifyContent: 'flex-end' }}>
+      {/* Section 4: Michelin Gastronomy (Extreme Right Edge, Wider past Middle) */}
+      <section className="story-section extreme-edge-section" style={{ justifyContent: 'flex-end', paddingLeft: 0, paddingRight: 0 }}>
         <div 
-          className="story-container"
+          className="story-container extreme-edge-container"
           style={{
+            width: '65%',
+            maxWidth: '65%',
             opacity: activeSection === 4 ? 1 : 0,
             transform: activeSection === 4 ? 'translateY(0)' : 'translateY(50px)',
             transition: 'transform 1.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 1.6s cubic-bezier(0.16, 1, 0.3, 1)'
           }}
         >
-          <div className="luxury-story-pane">
+          <div className="luxury-story-pane" style={{ borderRadius: '0px', paddingRight: '8%' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--accent-gold)' }}>
               <Coffee size={16} />
               <span style={{ textTransform: 'uppercase', fontSize: '0.75rem', letterSpacing: '2px', fontWeight: 700 }}>Summit Gastronomy</span>
@@ -348,17 +368,19 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Section 5: The Night Star Chalet (Left Aligned) */}
-      <section className="story-section" style={{ justifyContent: 'flex-start', paddingBottom: '120px' }}>
+      {/* Section 5: The Night Star Chalet (Extreme Left Edge, Wider past Middle) */}
+      <section className="story-section extreme-edge-section" style={{ justifyContent: 'flex-start', paddingBottom: '120px', paddingLeft: 0, paddingRight: 0 }}>
         <div 
-          className="story-container"
+          className="story-container extreme-edge-container"
           style={{
+            width: '65%',
+            maxWidth: '65%',
             opacity: activeSection === 5 ? 1 : 0,
             transform: activeSection === 5 ? 'translateY(0)' : 'translateY(50px)',
             transition: 'transform 1.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 1.6s cubic-bezier(0.16, 1, 0.3, 1)'
           }}
         >
-          <div className="luxury-story-pane">
+          <div className="luxury-story-pane" style={{ borderRadius: '0px', paddingLeft: '8%' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--accent-gold)' }}>
               <Snowflake size={16} />
               <span style={{ textTransform: 'uppercase', fontSize: '0.75rem', letterSpacing: '2px', fontWeight: 700 }}>Elevation 2,800m</span>
@@ -372,6 +394,45 @@ const Home = () => {
                 <span>Reserve Your Timeless Stay</span>
                 <ChevronRight size={18} />
               </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Section 6: Interactive Map & Coordinates (Center Aligned - 100% Width, Square Corners, Edge-to-Edge) */}
+      <section className="story-section" style={{ justifyContent: 'center', paddingBottom: '160px', paddingLeft: '0px', paddingRight: '0px', width: '100%', maxWidth: '100%' }}>
+        <div 
+          className="story-container"
+          style={{
+            maxWidth: '100%',
+            width: '100%',
+            opacity: activeSection === 6 ? 1 : 0,
+            transform: activeSection === 6 ? 'translateY(0)' : 'translateY(50px)',
+            transition: 'transform 1.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 1.6s cubic-bezier(0.16, 1, 0.3, 1)'
+          }}
+        >
+          <div className="luxury-story-pane" style={{ padding: '60px 10%', borderRadius: '0px', width: '100%', maxWidth: '100%', borderLeft: 'none', borderRight: 'none' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--accent-gold)' }}>
+              <Map size={16} />
+              <span style={{ textTransform: 'uppercase', fontSize: '0.75rem', letterSpacing: '2px', fontWeight: 700 }}>Registry Coordinates</span>
+            </div>
+            <h3 className="serif-text" style={{ fontSize: '2.4rem', color: 'var(--text-main)' }}>Find Our Sanctuary</h3>
+            <p style={{ color: 'var(--text-muted)', fontSize: '0.94rem', lineHeight: '1.6' }}>
+              Nestled securely in the serene mountain foothills of <strong>Champahati, Anandapalli, West Bengal, India (PIN-743330)</strong>. Experience high-altitude tranquility within direct travel coordinates of our private heliports and luxury shuttle lanes.
+            </p>
+            
+            {/* Elegant Map Embed */}
+            <div style={{ width: '100%', borderRadius: '0px', overflow: 'hidden', border: '1px solid rgba(22, 78, 53, 0.15)', boxShadow: '0 15px 30px rgba(0,0,0,0.1)' }}>
+              <iframe 
+                title="Hotel California Location Map"
+                src="https://maps.google.com/maps?q=Champahati,%20Anandapalli&t=&z=14&ie=UTF8&iwloc=&output=embed"
+                width="100%" 
+                height="380" 
+                style={{ border: 0, display: 'block' }}
+                allowFullScreen="" 
+                loading="lazy" 
+                referrerPolicy="no-referrer-when-downgrade"
+              />
             </div>
           </div>
         </div>
